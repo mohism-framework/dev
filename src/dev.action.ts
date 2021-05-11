@@ -1,6 +1,7 @@
 import { ActionBase, ArgvOption } from '@mohism/sloty';
 import { Dict } from '@mohism/utils';
 import { existsSync } from 'fs';
+import { valid } from 'semver';
 
 class DevAction extends ActionBase {
   options(): Dict<ArgvOption> {
@@ -22,8 +23,15 @@ class DevAction extends ActionBase {
   detectNodeVersion(pkg: { engines?: { node?: string } }) {
     if (pkg.engines?.node) {
       const rules = pkg.engines?.node.split(' ');
-      // how to find the correct version ?
-      console.log(rules);
+      const specVersion = rules.find(rule=>valid(rule))
+      if (specVersion) {
+        return specVersion;
+      }
+      const lt = rules.find(rule=>rule.startsWith('<'));
+      if (lt?.startsWith('<=')){
+        return lt.replace('<=','');
+      }
+      // todo deal with < 
     }
     return 'latest';
   }
@@ -31,8 +39,8 @@ class DevAction extends ActionBase {
   async run(): Promise<void> {
     // load pkg
     const pkg = this.loadPkg();
-
-    console.log(pkg);
+    const version = this.detectNodeVersion(pkg);
+    console.log(version);
     this.info('hello');
   }
 }
