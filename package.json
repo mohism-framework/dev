@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/mohism-framework/dev#readme",
   "dependencies": {
-    "@mohism/sloty": "^1.3.9"
+    "@mohism/sloty": "^1.3.9",
+    "semver": "^7.3.5"
   },
   "husky": {
     "hooks": {
