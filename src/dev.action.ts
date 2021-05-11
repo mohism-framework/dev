@@ -23,7 +23,7 @@ class DevAction extends ActionBase {
   detectNodeVersion(pkg: { engines?: { node?: string } }) {
     if (pkg.engines?.node) {
       const rules = pkg.engines?.node.split(' ');
-      const specVersion = rules.find(rule=>valid(rule))
+      const specVersion = rules.find(rule=>valid(rule));
       if (specVersion) {
         return specVersion;
       }
